@@ -1,0 +1,114 @@
+{
+  "name": "quote_ai",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -192,
+        16
+      ],
+      "id": "e302b37b-92ab-4b28-927e-671b68f874d6",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "chatId": "1237580780",
+        "text": "={{ $json.content.parts[0].text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "b5f9a570-ddf9-4dcd-bf98-5a0a827e95f8",
+      "name": "Send a text message",
+      "webhookId": "723a576f-2b8a-4296-94b1-e35c12336c33",
+      "credentials": {
+        "telegramApi": {
+          "id": "xT7wDUcfN3O3bhdZ",
+          "name": "Telegram account 511"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "generate a quotes with 30 words"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        64,
+        16
+      ],
+      "id": "b616df41-cea7-4649-aa11-e873ad815d48",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "fYjmLFn8w7P0uAFg",
+          "name": "Google Gemini(PaLM) Api account 970"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ec335b6c-f37f-498d-a303-7b2ef74084f4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8aa7a6b00703250dcbefcb510baac06d8bd02203b4f9c49a6f275db8e3adde34"
+  },
+  "id": "83Og3PISdOf4mjjA",
+  "tags": []
+}

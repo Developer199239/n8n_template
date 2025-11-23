@@ -1,0 +1,96 @@
+{
+  "name": "quote_http_req",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d5f1a028-e279-4118-bf1b-8a58af89c592",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://zenquotes.io/api/random",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "a22d955c-888a-4bc5-af19-4ba5e454100a",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "chatId": "1237580780",
+        "text": "=Quotes: {{ $json.q }}\nAuthor: {{ $json.a }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "cc30c3bb-c128-4713-b2f4-b5838e8f24e6",
+      "name": "Send a text message",
+      "webhookId": "db0212a3-bd09-441a-9aea-b469dd5cbde1",
+      "credentials": {
+        "telegramApi": {
+          "id": "xT7wDUcfN3O3bhdZ",
+          "name": "Telegram account 511"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a213ff61-5bac-4d41-b053-1e31af31b53b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8aa7a6b00703250dcbefcb510baac06d8bd02203b4f9c49a6f275db8e3adde34"
+  },
+  "id": "r2NDk1BaRaObCt31",
+  "tags": []
+}
