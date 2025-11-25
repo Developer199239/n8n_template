@@ -1,0 +1,210 @@
+{
+  "name": "webinar",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Your company name",
+        "formDescription": "webinar for digital marketing",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Your Email Address",
+              "fieldType": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Your Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Your Mobile Number",
+              "fieldType": "number",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0bbb99be-52d0-4855-8994-73980ba44c80",
+      "name": "On form submission",
+      "webhookId": "3420b93e-ca9b-4bee-b14b-afacb076b73d"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "12qRrMoZomsH0fejKZQIIYOwatccMUhT1G0Ctzua5s3o",
+          "mode": "list",
+          "cachedResultName": "webinar",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/12qRrMoZomsH0fejKZQIIYOwatccMUhT1G0Ctzua5s3o/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/12qRrMoZomsH0fejKZQIIYOwatccMUhT1G0Ctzua5s3o/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json['Your Name'] }}",
+            "Email": "={{ $json['Your Email Address'] }}",
+            "Number": "={{ $json['Your Mobile Number'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Number",
+              "displayName": "Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "5f03f07b-cc1d-4741-bcbd-caf314c05d58",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ZMIqvuovYQjdkHwx",
+          "name": "Google Sheets account 793"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('On form submission').item.json['Your Email Address'] }}",
+        "subject": "Webinar Info",
+        "emailType": "text",
+        "message": "Thank you for submitting your details into webinar....",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        416,
+        0
+      ],
+      "id": "11be9db6-ab45-405e-b84a-db00b80d99d9",
+      "name": "Send a message",
+      "webhookId": "4566f6f7-8f32-4724-b955-50e6d9524f35",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "zxad2hXpDhdMDaVh",
+          "name": "Gmail account 754"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "1237580780",
+        "text": "=New Form Submission:\nName: {{ $('Append row in sheet').item.json.Name }}\nEmail: {{ $('Append row in sheet').item.json.Email }}\nNumber: {{ $('Append row in sheet').item.json.Number }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        624,
+        0
+      ],
+      "id": "b9ce9b66-a06e-4bd9-8e40-88485ed64380",
+      "name": "Send a text message",
+      "webhookId": "9cadb361-a23b-4ab3-810b-b686f722ed06",
+      "credentials": {
+        "telegramApi": {
+          "id": "xT7wDUcfN3O3bhdZ",
+          "name": "Telegram account 511"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "549d8055-0eb9-41be-ab2d-e4244c307a2f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8aa7a6b00703250dcbefcb510baac06d8bd02203b4f9c49a6f275db8e3adde34"
+  },
+  "id": "mco6nQY894FfP8hW",
+  "tags": []
+}
