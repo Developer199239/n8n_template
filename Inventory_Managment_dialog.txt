@@ -1,0 +1,5 @@
+how many stock Notebook?
+=>There are 45 notebooks in stock.
+
+today sold 10 items Notebook. can you update sheet for Notebook?
+=>Done
